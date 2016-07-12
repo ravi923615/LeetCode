@@ -7,31 +7,23 @@
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
+
+ // Time Complexity O(n) with Space Complexity O(1)
 class Solution {
 public:
-    void getPreOrder(TreeNode* root,vector<int> & val){
-        if(root==NULL)
-            return;
-        val.push_back(root->val);
-        getPreOrder(root->left,val);
-        getPreOrder(root->right,val);
-    }
-    void setLinkedList(TreeNode* root,int i,vector<int> val){
-        if(i>=val.size())
-            return;
-        TreeNode* tmp = new TreeNode(val[i]);
-        tmp->right = NULL;
-        tmp->left = NULL;
-        root->right = tmp;
-        setLinkedList(root->right,i+1,val);
-    }
     void flatten(TreeNode* root) {
         if(root==NULL)
-            return;
-        vector<int> val;
-        getPreOrder(root,val);
-        root->left = NULL;
-        root->right = NULL;
-        setLinkedList(root,1,val);
+            return ;
+        TreeNode* temp = root;
+        while(temp){
+            if(temp->left){
+                TreeNode* pre = temp->left;
+                while(pre->right){pre = pre->right;}
+                pre->right = temp->right;
+                temp->right = temp->left;
+                temp->left = NULL;
+            }
+            temp = temp->right;
+        }
     }
 };
